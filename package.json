@@ -1,0 +1,33 @@
+{
+  "name": "@turbasen/reconvert-images",
+  "version": "1.0.0",
+  "description": "Reconvert images in Nasjonal Turbase through Jotunheimr",
+  "main": "index.js",
+  "scripts": {
+    "start": "iojs index.js",
+    "test": "mocha test/",
+    "watch": "mocha -w test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Turbasen/reconvert-images.git"
+  },
+  "keywords": [
+    "Nasjonal",
+    "Turbase"
+  ],
+  "author": "Hans Kristian Flaatten <hans.kristian.flaatten@turistforenignen.no>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Turbasen/reconvert-images/issues"
+  },
+  "homepage": "https://github.com/Turbasen/reconvert-images#readme",
+  "dependencies": {
+    "async": "^1.4.2",
+    "request": "^2.61.0",
+    "turbasen": "^1.1.1"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.5"
+  }
+}
