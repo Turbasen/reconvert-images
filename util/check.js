@@ -5,19 +5,43 @@ const turbasen = require('turbasen');
 const async = require('async');
 const read = require('fs').readFileSync;
 
-if (!process.argv[2]) {
-  console.log(`Usage: ${process.argv[1]} [file]`);
-  console.log('Check what other objects are refferencing an image');
-  process.exit(1);
-}
+const cmd = require('nomnom')
+  .script('check')
+  .options({
+    file: {
+      abbr: 'f',
+      help: 'File with _ids to check',
+    },
+    ids: {
+      abbr: 'i',
+      help: 'Image _id to check',
+    },
+    debug: {
+      abbr: 'd',
+      flag: true,
+      help: 'Print debugging info',
+    }
+  });
 
-const file = read(process.argv[2], 'utf8');
+const opts = cmd.parse();
 
 let turer = 0;
 let steder = 0;
 let områder = 0;
 
-async.each(file.split('\n'), function(image, cb) {
+// Require --file or --ids
+if (!opts.file && !opts.ids) {
+  cmd.print(cmd.getUsage());
+}
+
+// Parse image IDs
+if (opts.file) {
+  opts.ids = read(opts.file, 'utf8').split('\n');
+} else {
+  opts.ids = opts.ids.split(',');
+}
+
+async.each(opts.ids, function(image, cb) {
   if (image === '') { return cb(); }
 
   image = image.split(' ');
@@ -27,6 +51,8 @@ async.each(file.split('\n'), function(image, cb) {
     steder: turbasen.steder.bind(turbasen, {bilder: image[0]}),
     områder: turbasen.områder.bind(turbasen, {bilder: image[0]}),
   }, function(err, results) {
+    if (err) { return cb(err); }
+
     turer += results.turer[1].documents.length;
     steder += results.steder[1].documents.length;
     områder += results.områder[1].documents.length;
@@ -40,4 +66,3 @@ async.each(file.split('\n'), function(image, cb) {
   console.log('steder', steder);
   console.log('områder', områder);
 });
-
