@@ -3,13 +3,14 @@
 /* eslint no-console: [0] */
 'use strict';
 
-const turbasen = require('turbasen');
-const async = require('async');
-const read = require('fs').readFileSync;
-
 const cmd = require('nomnom')
   .script('npm run check')
   .options({
+    env: {
+      help: 'Nasjonal Turbase environment',
+      metavar: 'ENV',
+      default: 'dev',
+    },
     file: {
       abbr: 'f',
       help: 'Line seperated file with image _ids to check',
@@ -36,6 +37,12 @@ const cmd = require('nomnom')
   });
 
 const opts = cmd.parse();
+
+process.env.NTB_API_ENV = opts.env;
+
+const turbasen = require('turbasen');
+const async = require('async');
+const read = require('fs').readFileSync;
 
 let turer = 0;
 let steder = 0;
