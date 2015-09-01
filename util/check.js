@@ -13,11 +13,11 @@ const cmd = require('nomnom')
     },
     file: {
       abbr: 'f',
-      help: 'Line seperated file with image _ids to check',
+      help: 'Line separated file with image _ids to check',
     },
     ids: {
       abbr: 'i',
-      help: 'Comma seperated list of image _ids to check',
+      help: 'Comma separated list of image _ids to check',
     },
     patch: {
       abbr: 'p',

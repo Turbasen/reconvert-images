@@ -15,7 +15,7 @@ along with updated metadata if applicable.
 
 ## Check
 
-Utility to check refering objects for a list of images. The utility can also
+Utility to check referring objects for a list of images. The utility can also
 remove any references (`--patch` and/or the image itself (`--delete`).
 
 ```
@@ -24,8 +24,8 @@ $ docker-compose run --rm dev npm run check -- --help
 >
 > Options:
 >    --env ENV      Nasjonal Turbase environment  [dev]
->    -f, --file     Line seperated file with image _ids to check
->    -i, --ids      Comma seperated list of image _ids to check
+>    -f, --file     Line separated file with image _ids to check
+>    -i, --ids      Comma separated list of image _ids to check
 >    -p, --patch    Remove image references from other objects
 >    -d, --delete   Delete image from Nasjonal Turbase
 >    -d, --debug    Print debugging info
