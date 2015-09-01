@@ -13,20 +13,21 @@ const cmd = require('nomnom')
     },
     limit: {
       abbr: 'l',
+      hidden: true,
       metavar: 'N',
       help: 'Limit number of results per page',
       default: 50,
     },
     skip: {
       abbr: 's',
+      hidden: true,
       metavar: 'M',
       help: 'Number of results to skip before starting',
       default: 0,
     },
-    debug: {
-      abbr: 'd',
+    'no-debug': {
       flag: true,
-      help: 'Print debugging info',
+      help: 'Do not print debugging info',
     },
   });
 
