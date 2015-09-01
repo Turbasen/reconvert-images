@@ -4,11 +4,11 @@
   "description": "Reconvert images in Nasjonal Turbase through Jotunheimr",
   "main": "index.js",
   "scripts": {
-    "check": "./util/check.js",
+    "check": "iojs --harmony util/check.js",
     "hint": "eslint index.js lib/ test/ util/",
-    "start": "./index.js",
-    "test": "mocha test/",
-    "watch": "mocha -w test/"
+    "start": "iojs --harmony index.js",
+    "test": "mocha -r test/support/env --harmony test/",
+    "watch": "mocha -r test/support/env --harmony -w test/"
   },
   "repository": {
     "type": "git",
