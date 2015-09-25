@@ -44,6 +44,7 @@ const async = require('async');
 
 const upload = require('./lib/upload');
 const log = require('./lib/log');
+const geojson = require('./lib/geojson');
 
 const options = {
   status: '!Slettet',
@@ -141,9 +142,9 @@ async.during(test, function sync(callback) {
         img: body.versions
       }
 
-      // Attach geometry if the image file on disk has GPS coordinates but the
-      // image in Nasjonal Turbase does not
-      if (body.meta.geojson && !document.geojson) {
+      // Attach geometry if the image file on disk has valid GPS coordinates but
+      // the image in Nasjonal Turbase does not
+      if (geojson.validate(body.meta.geojson) && !document.geojson) {
         data.geojson = body.meta.geojson;
       }
 
