@@ -25,6 +25,10 @@ const cmd = require('nomnom')
       help: 'Number of results to skip before starting',
       default: 0,
     },
+    ids: {
+      abbr: 'i',
+      help: 'Comma separated list of image _ids to convert. If not specified, all documents are converted',
+    },
     'no-debug': {
       flag: true,
       help: 'Do not print debugging info',
@@ -53,14 +57,37 @@ const options = {
 
 let documents = [];
 
-async.during(function test(callback) {
-  console.log(options.skip);
-  turbasen.bilder(options, function getBilder(err, res, body) {
-    options.skip += 50;
-    documents = body.documents;
-    callback(err, documents.length > 0);
-  });
-}, function sync(callback) {
+// Define the test function to retrieve documents
+let test;
+if (opts.ids) {
+  // Explicit document IDs are provided; retrieve just those
+  opts.ids = opts.ids.split(',');
+  let i = 0;
+
+  test = function(callback) {
+    if (i == opts.ids.length) {
+      return callback(null, false);
+    }
+
+    turbasen.bilder.get(opts.ids[i], function getBilde(err, res, body) {
+      documents = [body];
+      i += 1;
+      return callback(err, true);
+    });
+  }
+} else {
+  // Retrieve all the documents
+  test = function(callback) {
+    console.log(options.skip);
+    turbasen.bilder(options, function getBilder(err, res, body) {
+      options.skip += 50;
+      documents = body.documents;
+      callback(err, documents.length > 0);
+    });
+  }
+}
+
+async.during(test, function sync(callback) {
   async.eachSeries(documents, function eachSeries(document, cb) {
     const url = upload.getImage(document);
     const _id = document._id;
