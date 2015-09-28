@@ -148,16 +148,18 @@ async.during(test, function sync(callback) {
         data.geojson = body.meta.geojson;
       }
 
+      const jotunheimr_body = body;
+
       // Patch the image in Nasjonal Turbase
       turbasen.bilder.patch(_id, data, function patchCallback(err, res, body) {
         if (err) {
           console.error(err);
-          log('turbasen_error.txt', _id, url, err.message);
+          log('turbasen_error.txt', _id, url, jotunheimr_body.versions[0].url, err);
           return setTimeout(cb, 0);
         }
 
         if (res.statusCode !== 200) {
-          log('turbasen_failed.txt', _id, url, res.statusCode, body.message);
+          log('turbasen_failed.txt', _id, url, jotunheimr_body.versions[0].url, res.statusCode, body.message);
           return setTimeout(cb, 0);
         }
 
