@@ -108,7 +108,7 @@ async.during(test, function sync(callback) {
       }
 
       if (res.statusCode !== 201) {
-        log('jotunheimr_failed.txt', _id, url, res.statusCode);
+        log('jotunheimr_failed.txt', _id, url, res.statusCode, body.message);
         return setTimeout(cb, 0);
       }
 
