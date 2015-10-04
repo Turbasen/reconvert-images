@@ -25,9 +25,13 @@ const cmd = require('nomnom')
       help: 'Number of results to skip before starting',
       default: 0,
     },
+    file: {
+      abbr: 'f',
+      help: 'Optional line separated file with image _ids to convert',
+    },
     ids: {
       abbr: 'i',
-      help: 'Comma separated list of image _ids to convert. If not specified, all documents are converted',
+      help: 'Optional comma separated list of image _ids to convert',
     },
     'no-debug': {
       flag: true,
@@ -45,6 +49,7 @@ const async = require('async');
 const upload = require('./lib/upload');
 const log = require('./lib/log');
 const geojson = require('./lib/geojson');
+const read = require('fs').readFileSync;
 
 const options = {
   status: '!Slettet',
@@ -60,17 +65,23 @@ let documents = [];
 
 // Define the test function to retrieve documents
 let test;
-if (opts.ids) {
+if (opts.file || opts.ids) {
+  let ids;
+  if (opts.file) {
+    ids = read(opts.file, 'utf8').split('\n');
+  } else {
+    ids = opts.ids.split(',');
+  }
+
   // Explicit document IDs are provided; retrieve just those
-  opts.ids = opts.ids.split(',');
   let i = 0;
 
   test = function(callback) {
-    if (i == opts.ids.length) {
+    if (i == ids.length) {
       return callback(null, false);
     }
 
-    turbasen.bilder.get(opts.ids[i], function getBilde(err, res, body) {
+    turbasen.bilder.get(ids[i], function getBilde(err, res, body) {
       documents = [body];
       i += 1;
       return callback(err, true);
